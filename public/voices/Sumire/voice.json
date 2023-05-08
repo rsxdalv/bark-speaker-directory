@@ -1,0 +1,14 @@
+{
+  "name": "Sumire",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Sumire.npz",
+  "tags": [
+    "cute",
+    "young",
+    "studio"
+  ],
+  "language": "japanese",
+  "gender": "female",
+  "author": "rsxdalv"
+}
