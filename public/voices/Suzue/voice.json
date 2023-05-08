@@ -1,0 +1,10 @@
+{
+    "name": "Suzue",
+    "image": "./image.jpg",
+    "audio": "./sample.wav",
+    "download": "./suzue.npz",
+    "tags": ["soft", "calm", "unreliable"],
+    "language": "japanese",
+    "gender": "female",
+    "author": "rsxdalv"
+}
