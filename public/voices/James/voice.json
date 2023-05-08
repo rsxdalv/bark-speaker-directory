@@ -1,0 +1,10 @@
+{
+    "name": "James",
+    "image": "./image.jpg",
+    "audio": "./sample.wav",
+    "download": "./james.npz",
+    "tags": ["smooth","vocal","tone"],
+    "language": "american",
+    "gender": "male",
+    "author": "rsxdalv"
+}
