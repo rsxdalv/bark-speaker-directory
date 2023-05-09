@@ -133,7 +133,7 @@ const Gender = ({ gender }: Pick<Voice, "gender">) => {
   const color = genderToHue[gender];
   const filter = `invert(1) brightness(0.5) sepia(1) hue-rotate(${color}) saturate(3)`;
   return (
-    <button title={`Gender: ${gender}`}>
+    <button className="select-none" title={`Gender: ${gender}`}>
       <img
         style={{
           filter,
