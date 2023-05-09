@@ -1,0 +1,14 @@
+{
+  "name": "Alice",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Alice.npz",
+  "tags": [
+    "energetic",
+    "varied emotions",
+    "clear"
+  ],
+  "language": "american",
+  "gender": "female",
+  "author": "rsxdalv"
+}

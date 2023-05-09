@@ -1,0 +1,10 @@
+{
+    "name": "Jade",
+    "image": "./image.jpg",
+    "audio": "./sample.wav",
+    "download": "./jade.npz",
+    "tags": ["soft", "noisy", "breathy", "slow"],
+    "language": "american",
+    "gender": "female",
+    "author": "rsxdalv"
+}
