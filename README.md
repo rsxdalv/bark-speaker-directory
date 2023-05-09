@@ -4,6 +4,10 @@ This is a directory of voice prompts, also known as history prompts, to be used 
 
 ![Screenshot 1](./screenshots/screenshot%20(1).png)
 
+## Adding voices
+
+To add voices, see https://github.com/rsxdalv/bark-speaker-directory/pull/2
+
 # Development
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
