@@ -1,0 +1,13 @@
+{
+  "name": "Seok",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Seok.npz",
+  "tags": [
+    "clear",
+    "paced"
+  ],
+  "language": "korean",
+  "gender": "male",
+  "author": "rsxdalv"
+}

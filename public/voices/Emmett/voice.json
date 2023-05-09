@@ -1,0 +1,14 @@
+{
+  "name": "Emmett",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Emmett.npz",
+  "tags": [
+    "punctuated",
+    "sharp",
+    "fluent"
+  ],
+  "language": "american",
+  "gender": "male",
+  "author": "rsxdalv"
+}
