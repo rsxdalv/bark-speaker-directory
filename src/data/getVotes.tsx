@@ -3,7 +3,7 @@ export interface VoteCount {
 }
 
 // const BASE_URL = "http://localhost:3001";
-const BASE_URL = "http://riga.us.to:3001";
+const BASE_URL = "https://riga.us.to:3002";
 
 const callAPI = async (
   url: string,
