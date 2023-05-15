@@ -1,9 +1,19 @@
 import React from "react";
 
-
 export const MUIIcon = ({
-  icon, alt,
+  icon,
+  alt,
+  className = "",
 }: {
-  icon: { src: string; width: number; height: number; };
+  icon: { src: string; width: number; height: number };
   alt: string;
-}) => <img src={icon.src} width={icon.width} height={icon.height} alt={alt} />;
+  className?: string;
+}) => (
+  <img
+    src={icon.src}
+    width={icon.width}
+    height={icon.height}
+    alt={alt}
+    className={`select-none ${className}`}
+  />
+);

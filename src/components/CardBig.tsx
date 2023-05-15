@@ -5,12 +5,14 @@ import ManIcon from "@material-design-icons/svg/filled/male.svg";
 import OtherIcon from "@material-design-icons/svg/filled/alt_route.svg";
 import PlayIcon from "@material-design-icons/svg/filled/play_arrow.svg";
 import PauseIcon from "@material-design-icons/svg/filled/pause.svg";
+import AddIcon from "@material-design-icons/svg/filled/add.svg";
 import React, { useRef, useState } from "react";
 import { Flag } from "./Flag";
 import { Voice } from "./Voice";
 import { useFavorites, saveOrDeleteFromFavorites } from "./FavoritesProvider";
 import { useLocalVotes, useVotes } from "./VotesProvider";
 import { Vote } from "./Vote";
+import { MUIIcon } from "./mini/MUIIcon";
 
 export const CardBig = ({
   voice: { name, audio, download, image, tags, language, author, gender },
@@ -53,6 +55,34 @@ export const CardBig = ({
             voteCount={voteCount}
           />
           <Download download={download} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const CardEmpty = () => {
+  const link = "https://github.com/rsxdalv/bark-speaker-directory/pull/2";
+  return (
+    <div className="flex flex-col items-center justify-start w-full max-w-md py-4 px-6 bg-white rounded shadow-lg">
+      <div className="flex flex-col space-y-4 w-full h-full justify-between">
+        <div className="flex items-center w-full gap-x-2">
+          <h1 className="text-2xl font-bold text-gray-900">Add a new voice</h1>
+        </div>
+        <div className="flex w-full justify-center">
+          <button
+            className="w-24 h-24 rounded bg-gray-200 hover:bg-gray-300"
+            onClick={() => window.open(link, "_blank")}
+          >
+            <MUIIcon
+              icon={AddIcon}
+              alt="Add a new voice"
+              className="w-24 h-24 rounded"
+            />
+          </button>
+        </div>
+        <div className="flex w-full justify-between">
+          <div className="w-8 h-8" />
         </div>
       </div>
     </div>

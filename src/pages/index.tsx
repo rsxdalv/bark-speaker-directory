@@ -3,7 +3,7 @@ import React from "react";
 
 import { FavoritesProvider, Favorites } from "../components/FavoritesProvider";
 import { LocalVotesProvider, VotesProvider } from "@/components/VotesProvider";
-import { CardBig } from "../components/CardBig";
+import { CardBig, CardEmpty } from "../components/CardBig";
 import { Voice } from "../components/Voice";
 import { getVoicesData } from "../data/getVoicesData";
 
@@ -30,6 +30,7 @@ export default function Home({ list_of_voices }: { list_of_voices: Voice[] }) {
               {list_of_voices.map((voice) => (
                 <CardBig key={voice.download} voice={voice} />
               ))}
+              <CardEmpty />
             </div>
           </main>
         </VotesProvider>
