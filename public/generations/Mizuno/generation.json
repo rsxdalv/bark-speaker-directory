@@ -1,0 +1,14 @@
+{
+  "name": "Mizuno",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Mizuno.npz",
+  "tags": [
+    "music",
+    "synth",
+    "unnatural"
+  ],
+  "language": "japanese",
+  "gender": "female",
+  "author": "rsxdalv"
+}

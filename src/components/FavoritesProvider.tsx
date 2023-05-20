@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import { CardBig } from "./CardBig";
-import { Voice } from "./Voice";
+import { Voice } from "../types/Voice";
 
 const FavoritesContext = React.createContext<{
   favorites: string[];

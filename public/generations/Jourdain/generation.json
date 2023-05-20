@@ -1,0 +1,13 @@
+{
+  "name": "Jourdain",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Jourdain.npz",
+  "tags": [
+    "heartfelt",
+    "clear"
+  ],
+  "language": "french",
+  "gender": "male",
+  "author": "rsxdalv"
+}

@@ -1,4 +1,4 @@
-import { Voice } from "../components/Voice";
+import { Voice } from "../types/Voice";
 
 const random_image_backup = () => {
   return `https://picsum.photos/seed/${Math.random()}/96/96`;

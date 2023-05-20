@@ -1,0 +1,13 @@
+{
+  "name": "Shirley",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Shirley.npz",
+  "tags": [
+    "natural",
+    "fluent"
+  ],
+  "language": "american",
+  "gender": "female",
+  "author": "rsxdalv"
+}

@@ -8,11 +8,12 @@ import PauseIcon from "@material-design-icons/svg/filled/pause.svg";
 import AddIcon from "@material-design-icons/svg/filled/add.svg";
 import React, { useRef, useState } from "react";
 import { Flag } from "./Flag";
-import { Voice } from "./Voice";
+import { Voice } from "../types/Voice";
 import { useFavorites, saveOrDeleteFromFavorites } from "./FavoritesProvider";
 import { useLocalVotes, useVotes } from "./VotesProvider";
 import { Vote } from "./Vote";
 import { MUIIcon } from "./mini/MUIIcon";
+import { Generation } from "../types/Generation";
 
 export const CardBig = ({
   voice: { name, audio, download, image, tags, language, author, gender },
@@ -61,13 +62,36 @@ export const CardBig = ({
   );
 };
 
-export const CardEmpty = () => {
-  const link = "https://github.com/rsxdalv/bark-speaker-directory/pull/2";
+export const CardGeneration = ({
+  generation: { name, audio, tags, language },
+}: {
+  generation: Generation;
+}) => {
   return (
     <div className="flex flex-col items-center justify-start w-full max-w-md py-4 px-6 bg-white rounded shadow-lg">
       <div className="flex flex-col space-y-4 w-full h-full justify-between">
         <div className="flex items-center w-full gap-x-2">
-          <h1 className="text-2xl font-bold text-gray-900">Add a new voice</h1>
+          <h1 className="text-2xl font-bold text-gray-900">{name}</h1>
+          <div className="ml-auto" />
+          <Flag language={language} />
+        </div>
+        <div className="flex w-full space-x-4">
+          <Tags tags={tags} />
+        </div>
+        <div className="flex w-full justify-between">
+          <AudioPlayer audio={audio} />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const CardEmpty = ({ title, link }: { title: string, link: string }) => {
+  return (
+    <div className="flex flex-col items-center justify-start w-full max-w-md py-4 px-6 bg-white rounded shadow-lg">
+      <div className="flex flex-col space-y-4 w-full h-full justify-between">
+        <div className="flex items-center w-full gap-x-2">
+          <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
         </div>
         <div className="flex w-full justify-center">
           <button
