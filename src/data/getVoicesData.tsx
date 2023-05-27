@@ -13,7 +13,8 @@ const getGenerations = () => fs.readdirSync(generationsPath);
 const oggPath = path.join(basePath, "ogg");
 const getOgg = () => fs.readdirSync(oggPath);
 
-const baseUrlPath = "bark-speaker-directory";
+const baseUrlPath = "/bark-speaker-directory";
+// const baseUrlPath = "";
 
 // For each voice get voice.json file and parse it
 // Return array of objects
