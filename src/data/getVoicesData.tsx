@@ -1,6 +1,5 @@
 import fs from "fs";
 import path from "path";
-import { inspect } from "util";
 import { parseFile } from "music-metadata";
 
 const basePath = path.join(__dirname, "../../../public");
@@ -13,6 +12,8 @@ const getGenerations = () => fs.readdirSync(generationsPath);
 
 const oggPath = path.join(basePath, "ogg");
 const getOgg = () => fs.readdirSync(oggPath);
+
+const baseUrlPath = "bark-speaker-directory";
 
 // For each voice get voice.json file and parse it
 // Return array of objects
@@ -35,7 +36,7 @@ export const getVoicesData = () => {
     const fixPath = (key: string) => {
       if (voice[key]) {
         voice[key] = path
-          .join("voices", voice.directory, voice[key])
+          .join(baseUrlPath, "voices", voice.directory, voice[key])
           .split(path.sep)
           .join("/");
       }
@@ -45,35 +46,6 @@ export const getVoicesData = () => {
     fixPath("download");
   });
   return voicesData;
-};
-
-export const getGenerationsData = () => {
-  const generations = getGenerations();
-  const generationsData = generations.map((generation) => {
-    const generationData = fs.readFileSync(
-      path.join(generationsPath, generation, "generation.json"),
-      "utf8"
-    );
-    return JSON.parse(generationData);
-  });
-  // include the directory name in the object
-  generationsData.forEach((generation, index) => {
-    generation.directory = generations[index];
-  });
-  // join path for image, audio and download keys with directory
-  generationsData.forEach((generation) => {
-    const fixPath = (key: string) => {
-      if (generation[key]) {
-        generation[key] = path
-          .join("generations", generation.directory, generation[key])
-          .split(path.sep)
-          .join("/");
-      }
-    };
-    fixPath("audio");
-  });
-
-  return generationsData;
 };
 
 export const getOggData = async () => {
@@ -96,25 +68,6 @@ export const getOggData = async () => {
   });
   const oggDataParsed = await Promise.all(oggData);
   return oggDataParsed;
-  // console.log(inspect(oggDataParsed, { showHidden: false, depth: null }));
-  // include the directory name in the object
-  // oggData.forEach((ogg, index) => {
-  //   ogg.directory = ogg[index];
-  // });
-  // // join path for image, audio and download keys with directory
-  // oggData.forEach((ogg) => {
-  //   const fixPath = (key: string) => {
-  //     if (ogg[key]) {
-  //       ogg[key] = path
-  //         .join("ogg", ogg.directory, ogg[key])
-  //         .split(path.sep)
-  //         .join("/");
-  //     }
-  //   };
-  //   fixPath("audio");
-  // });
-
-  return oggData;
 };
 
 getOggData();
