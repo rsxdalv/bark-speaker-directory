@@ -6,14 +6,14 @@ import OtherIcon from "@material-design-icons/svg/filled/alt_route.svg";
 import PlayIcon from "@material-design-icons/svg/filled/play_arrow.svg";
 import PauseIcon from "@material-design-icons/svg/filled/pause.svg";
 import AddIcon from "@material-design-icons/svg/filled/add.svg";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Flag } from "./Flag";
 import { Voice } from "../types/Voice";
 import { useFavorites, saveOrDeleteFromFavorites } from "./FavoritesProvider";
 import { useLocalVotes, useVotes } from "./VotesProvider";
 import { Vote } from "./Vote";
 import { MUIIcon } from "./mini/MUIIcon";
-import { Generation } from "../types/Generation";
+import { Generation, GenerationRaw } from "../types/Generation";
 
 export const CardBig = ({
   voice: { name, audio, download, image, tags, language, author, gender },
@@ -63,30 +63,67 @@ export const CardBig = ({
 };
 
 export const CardGeneration = ({
-  generation: { name, audio, tags, language },
+  generation: { prompt, language, history_hash, filename, date, ...rest },
 }: {
-  generation: Generation;
+  generation: GenerationRaw;
 }) => {
+  // Detect if prompt is Japanese
+  const isJapanese = prompt.match(/[\u3040-\u309F\u30A0-\u30FF]/);
+  const maxLength = isJapanese ? 30 : 50;
+  // const maxLength = 100000;
   return (
     <div className="flex flex-col items-center justify-start w-full max-w-md py-4 px-6 bg-white rounded shadow-lg">
       <div className="flex flex-col space-y-4 w-full h-full justify-between">
-        <div className="flex items-center w-full gap-x-2">
-          <h1 className="text-2xl font-bold text-gray-900">{name}</h1>
-          <div className="ml-auto" />
-          <Flag language={language} />
-        </div>
-        <div className="flex w-full space-x-4">
-          <Tags tags={tags} />
+        <div className="flex w-full">
+          <h1 className="text-2xl font-bold text-gray-900">
+            <span
+              className={
+                prompt.length > maxLength
+                ? "text-xl font-bold text-gray-900"
+                : "text-2xl font-bold text-gray-900"
+              }
+              >
+              {prompt.length > maxLength ? prompt.substring(0, maxLength) + "..." : prompt}
+            </span>
+          </h1>
         </div>
         <div className="flex w-full justify-between">
-          <AudioPlayer audio={audio} />
+          <AudioPlayer
+            audio={`ogg/${filename
+              ?.replace("outputs\\", "")
+              ?.replace(".wav", ".ogg")}`}
+          />
+          <p className="text-gray-500">{prettifyDate(date)}</p>
+          {/* {language && <Flag language={parseMetadataLanguage(language)} />} */}
         </div>
+        <div>
+          {/* <a
+            href={`#voices/${history_hash}`}
+            target="_blank"
+            className="text-blue-500 hover:underline"
+          >
+            Voice
+          </a> */}
+          {/* <a
+            href={`#generations/${history_hash}`}
+            target="_blank"
+            className="text-blue-500 hover:underline"
+          >
+            Generation info
+          </a> */}
+        </div>
+        <Metadata
+          prompt={prompt}
+          language={language || "unknown"}
+          history_hash={history_hash}
+          {...rest}
+        />
       </div>
     </div>
   );
 };
 
-export const CardEmpty = ({ title, link }: { title: string, link: string }) => {
+export const CardEmpty = ({ title, link }: { title: string; link: string }) => {
   return (
     <div className="flex flex-col items-center justify-start w-full max-w-md py-4 px-6 bg-white rounded shadow-lg">
       <div className="flex flex-col space-y-4 w-full h-full justify-between">
@@ -171,6 +208,25 @@ const AudioPlayer = ({ audio }: Pick<Voice, "audio">) => {
     setIsPlaying(!isPlaying);
   };
 
+  // set is playing to false when audio ends
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    const handleEnded = () => {
+      setIsPlaying(false);
+    };
+
+    audio.addEventListener("ended", handleEnded);
+
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+    };
+  }, [audioRef.current]);
+
   return (
     <div className="flex items-center">
       <button
@@ -251,3 +307,84 @@ const Tags = ({ tags }: Pick<Voice, "tags">) => (
     ))}
   </ul>
 );
+
+const parseMetadataLanguage = (language: string) => language.toLowerCase();
+
+const Metadata = ({
+  prompt,
+  language,
+  history_hash,
+  history_prompt,
+  seed,
+  text_temp,
+  waveform_temp,
+}: Pick<
+  GenerationRaw,
+  | "prompt"
+  | "language"
+  | "history_hash"
+  | "history_prompt"
+  | "seed"
+  | "text_temp"
+  | "waveform_temp"
+>) => (
+  <div className="text-xs text-gray-500 flex flex-col w-full break-words">
+    <div className="font-bold">Generation details:</div>
+    <div className="flex flex-col">
+      <div className="flex flex-row">
+        <div className="font-bold">Prompt:</div>
+        <div className="ml-1">{prompt}</div>
+      </div>
+      <div className="flex flex-row">
+        <div className="font-bold">Language:</div>
+        <div className="ml-1">{language}</div>
+      </div>
+      <div className="flex flex-row">
+        <div className="font-bold">History Hash:</div>
+        <div className="ml-1">{history_hash}</div>
+      </div>
+
+      <div className="flex flex-row">
+        <div className="font-bold">History Prompt:</div>
+        <div className="ml-1">{history_prompt}</div>
+      </div>
+      <div className="flex flex-row">
+        <div className="font-bold">Seed:</div>
+        <div className="ml-1">{seed}</div>
+      </div>
+      <div className="flex flex-row">
+        <div className="font-bold">Text Temperature:</div>
+        <div className="ml-1">{text_temp}</div>
+      </div>
+      <div className="flex flex-row">
+        <div className="font-bold">Waveform Temperature:</div>
+        <div className="ml-1">{waveform_temp}</div>
+      </div>
+    </div>
+  </div>
+);
+
+// 2023-05-27_13-06-13
+const parseDate = (date: string) => {
+  const [year, month, day, hour, minute, second] = date
+    .split(/[-_]/)
+    .map((x) => parseInt(x));
+  return new Date(year, month - 1, day, hour, minute, second);
+};
+
+const prettifyDate = (date: string) => {
+  const dateObj = parseDate(date);
+  return (
+    <time dateTime={date}>
+      {dateObj.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+
+        // hour: "numeric",
+        // minute: "numeric",
+      })}
+    </time>
+  );
+};
+

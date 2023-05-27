@@ -294,7 +294,7 @@ const languagesToFlags = {
 export function Flag({ language }: { language: string }) {
   const FlagComponent = languagesToFlags[language as keyof typeof languagesToFlags];
   const languagePretty = language[0].toUpperCase() + language.slice(1);
-  return <FlagComponent 
+  return !FlagComponent ? null : <FlagComponent 
     className="w-8 h-6 shadow rounded select-none flex-shrink-0"
     title={languagePretty}
     aria-label="language flag"
