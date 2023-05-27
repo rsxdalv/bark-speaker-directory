@@ -11,3 +11,20 @@ export type Generation = {
   gender: "male" | "female" | "other";
   image: string;
 };
+
+export interface GenerationRaw {
+  prompt: string;
+  language: string;
+  speaker_id: string;
+  history_prompt: string;
+  history_prompt_npz: string;
+  history_hash: string;
+  text_temp: number;
+  waveform_temp: number;
+  date: string;
+  seed: string;
+  filename: string;
+  filename_png: string;
+  filename_json: string;
+  filename_npz: string;
+}

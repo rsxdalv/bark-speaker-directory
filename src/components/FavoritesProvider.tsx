@@ -39,9 +39,9 @@ export const useFavorites = () => {
   return [favorites, setFavorites] as const;
 };
 
-export const Favorites = ({ list_of_voices }: { list_of_voices: Voice[] }) => {
+export const Favorites = ({ voices }: { voices: Voice[] }) => {
   const [favorites] = useFavorites();
-  const favoritesHydrated = list_of_voices.filter((voice) =>
+  const favoritesHydrated = voices.filter((voice) =>
     favorites.includes(voice.download)
   );
   return (
