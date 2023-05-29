@@ -341,7 +341,7 @@ const Metadata = ({
       </div>
       <div className="flex flex-row">
         <div className="font-bold">History Hash:</div>
-        <div className="ml-1">{history_hash}</div>
+        <div className="ml-1">{history_prompt !== "None" ? history_hash : "None"}</div>
       </div>
 
       <div className="flex flex-row">
