@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { parseFile } from "music-metadata";
+import { parseMetadataDate } from "../components/parseMetadataDate";
 
 const basePath = path.join(__dirname, "../../../public");
 // const basePath = path.join(__dirname, "../../public");
@@ -68,6 +69,13 @@ export const getOggData = async () => {
     }
   });
   const oggDataParsed = await Promise.all(oggData);
+  // Sort by date
+  oggDataParsed.sort((a, b) => {
+    return (
+      parseMetadataDate(b.date).getTime() -
+      parseMetadataDate(a.date).getTime()
+    );
+  });
   return oggDataParsed;
 };
 

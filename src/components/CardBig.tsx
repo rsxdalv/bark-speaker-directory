@@ -14,6 +14,7 @@ import { useLocalVotes, useVotes } from "./VotesProvider";
 import { Vote } from "./Vote";
 import { MUIIcon } from "./mini/MUIIcon";
 import { Generation, GenerationRaw } from "../types/Generation";
+import { parseMetadataDate } from "./parseMetadataDate";
 
 export const CardBig = ({
   voice: { name, audio, download, image, tags, language, author, gender },
@@ -79,11 +80,13 @@ export const CardGeneration = ({
             <span
               className={
                 prompt.length > maxLength
-                ? "text-xl font-bold text-gray-900"
-                : "text-2xl font-bold text-gray-900"
+                  ? "text-xl font-bold text-gray-900"
+                  : "text-2xl font-bold text-gray-900"
               }
-              >
-              {prompt.length > maxLength ? prompt.substring(0, maxLength) + "..." : prompt}
+            >
+              {prompt.length > maxLength
+                ? prompt.substring(0, maxLength) + "..."
+                : prompt}
             </span>
           </h1>
         </div>
@@ -341,7 +344,9 @@ const Metadata = ({
       </div>
       <div className="flex flex-row">
         <div className="font-bold">History Hash:</div>
-        <div className="ml-1">{history_prompt !== "None" ? history_hash : "None"}</div>
+        <div className="ml-1">
+          {history_prompt !== "None" ? history_hash : "None"}
+        </div>
       </div>
 
       <div className="flex flex-row">
@@ -364,16 +369,8 @@ const Metadata = ({
   </div>
 );
 
-// 2023-05-27_13-06-13
-const parseDate = (date: string) => {
-  const [year, month, day, hour, minute, second] = date
-    .split(/[-_]/)
-    .map((x) => parseInt(x));
-  return new Date(year, month - 1, day, hour, minute, second);
-};
-
 const prettifyDate = (date: string) => {
-  const dateObj = parseDate(date);
+  const dateObj = parseMetadataDate(date);
   return (
     <time dateTime={date}>
       {dateObj.toLocaleDateString(undefined, {
@@ -387,4 +384,3 @@ const prettifyDate = (date: string) => {
     </time>
   );
 };
-
