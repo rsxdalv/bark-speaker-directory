@@ -6,7 +6,20 @@ export type Generation = {
   tags: string[];
   // deprecated
   download: string;
-  language: "american" | "german" | "spanish" | "french" | "hindi" | "chinese" | "portuguese" | "russian" | "turkish" | "polish" | "korean" | "japanese" | "italian";
+  language:
+    | "american"
+    | "german"
+    | "spanish"
+    | "french"
+    | "hindi"
+    | "chinese"
+    | "portuguese"
+    | "russian"
+    | "turkish"
+    | "polish"
+    | "korean"
+    | "japanese"
+    | "italian";
   author: string;
   gender: "male" | "female" | "other";
   image: string;
@@ -27,4 +40,8 @@ export interface GenerationRaw {
   filename_png: string;
   filename_json: string;
   filename_npz: string;
+
+  is_big_semantic_model: boolean;
+  is_big_coarse_model: boolean;
+  is_big_fine_model: boolean;
 }

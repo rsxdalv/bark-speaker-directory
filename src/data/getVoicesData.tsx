@@ -57,13 +57,17 @@ export const getOggData = async () => {
     const metadata = await parseFile(filename);
     try {
       return JSON.parse(
-        metadata?.common?.comment?.[0] || "{}"
+        // metadata?.common?.comment?.[0] || "{}"
+        metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0].value || "{}"
       );
     } 
     catch (error) {
       console.error(error);
       console.log(
-        metadata?.common?.comment?.[0]
+        "Error parsing metadata for file: " + filename
+      )
+      console.log(
+        "metadata?.native?.vorbis?.filter((x) => x.id === 'DESCRIPTION')[0].value: " + metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0].value
       )
       return {};
     }
@@ -78,8 +82,6 @@ export const getOggData = async () => {
   });
   return oggDataParsed;
 };
-
-getOggData();
 
 // Save voices data to json file
 // --------------------------------------------------

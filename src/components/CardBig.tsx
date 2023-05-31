@@ -321,6 +321,9 @@ const Metadata = ({
   seed,
   text_temp,
   waveform_temp,
+  is_big_semantic_model,
+  is_big_coarse_model,
+  is_big_fine_model,
 }: Pick<
   GenerationRaw,
   | "prompt"
@@ -330,6 +333,9 @@ const Metadata = ({
   | "seed"
   | "text_temp"
   | "waveform_temp"
+  | "is_big_semantic_model"
+  | "is_big_coarse_model"
+  | "is_big_fine_model"
 >) => (
   <div className="text-xs text-gray-500 flex flex-col w-full break-words">
     <div className="font-bold">Generation details:</div>
@@ -338,21 +344,38 @@ const Metadata = ({
         <div className="font-bold">Prompt:</div>
         <div className="ml-1">{prompt}</div>
       </div>
+
       <div className="flex flex-row">
-        <div className="font-bold">Language:</div>
-        <div className="ml-1">{language}</div>
+        <div className="font-bold">Semantic Model:</div>
+        <div className="ml-1">
+          {is_big_semantic_model ? "Big" : "Small"}
+        </div>
       </div>
+      <div className="flex flex-row">
+        <div className="font-bold">Coarse Model:</div>
+        <div className="ml-1">{is_big_coarse_model ? "Big" : "Small"}</div>
+      </div>
+      <div className="flex flex-row">
+        <div className="font-bold">Fine Model:</div>
+        <div className="ml-1">{is_big_fine_model ? "Big" : "Small"}</div>
+      </div>
+
       <div className="flex flex-row">
         <div className="font-bold">History Hash:</div>
         <div className="ml-1">
           {history_prompt !== "None" ? history_hash : "None"}
         </div>
       </div>
-
       <div className="flex flex-row">
         <div className="font-bold">History Prompt:</div>
         <div className="ml-1">{history_prompt}</div>
       </div>
+
+      <div className="flex flex-row">
+        <div className="font-bold">Language:</div>
+        <div className="ml-1">{language}</div>
+      </div>
+
       <div className="flex flex-row">
         <div className="font-bold">Seed:</div>
         <div className="ml-1">{seed}</div>

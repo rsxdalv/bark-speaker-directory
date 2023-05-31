@@ -30,7 +30,7 @@ export default function Home({
 }
 
 export const getStaticProps = async () => {
-  const generations: Voice[] = await getOggData();
+  const generations: GenerationRaw[] = await getOggData();
   return {
     props: {
       generations: generations,
