@@ -2,6 +2,9 @@ import fs from "fs";
 import path from "path";
 import { parseFile } from "music-metadata";
 import { parseMetadataDate } from "../components/parseMetadataDate";
+import * as AdmZip from "adm-zip";
+import { parseNpy } from "./npz-parsing";
+import { npyToUtf8 } from "./npyToUtf8";
 
 const basePath = path.join(__dirname, "../../../public");
 // const basePath = path.join(__dirname, "../../public");
@@ -14,7 +17,10 @@ const getGenerations = () => fs.readdirSync(generationsPath);
 const oggPath = path.join(basePath, "ogg");
 const getOgg = () => fs.readdirSync(oggPath);
 
-const baseUrlPath = "/bark-speaker-directory";
+const npzPath = path.join(basePath, "voice-drafts");
+const getNpzs = () => fs.readdirSync(npzPath);
+
+const baseUrlPath = process.env.BASE_URL_PATH || "/bark-speaker-directory";
 // const baseUrlPath = "";
 
 // For each voice get voice.json file and parse it
@@ -56,19 +62,22 @@ export const getOggData = async () => {
     const filename = path.join(oggPath, ogg);
     const metadata = await parseFile(filename);
     try {
-      return JSON.parse(
-        // metadata?.common?.comment?.[0] || "{}"
-        metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0].value || "{}"
-      );
-    } 
-    catch (error) {
+      return {
+        ...JSON.parse(
+          // metadata?.common?.comment?.[0] || "{}"
+          metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0]
+            .value || "{}"
+        ),
+        filename: path.join(baseUrlPath, "ogg", ogg).split(path.sep).join("/"),
+      };
+    } catch (error) {
       console.error(error);
+      console.log("Error parsing metadata for file: " + filename);
       console.log(
-        "Error parsing metadata for file: " + filename
-      )
-      console.log(
-        "metadata?.native?.vorbis?.filter((x) => x.id === 'DESCRIPTION')[0].value: " + metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0].value
-      )
+        "metadata?.native?.vorbis?.filter((x) => x.id === 'DESCRIPTION')[0].value: " +
+          metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0]
+            .value
+      );
       return {};
     }
   });
@@ -76,12 +85,34 @@ export const getOggData = async () => {
   // Sort by date
   oggDataParsed.sort((a, b) => {
     return (
-      parseMetadataDate(b.date).getTime() -
-      parseMetadataDate(a.date).getTime()
+      parseMetadataDate(b.date).getTime() - parseMetadataDate(a.date).getTime()
     );
   });
   return oggDataParsed;
 };
+
+const parseToNpzData = (buf: Buffer | ArrayBuffer) =>
+  new AdmZip.default(buf instanceof Buffer ? buf : Buffer.from(buf))
+    .getEntries()
+    .filter((entry) => entry.name === "metadata.npy")
+    .map((entry) => parseNpy(entry.getData().buffer))
+    .map((entry) => npyToUtf8(entry))
+    .map((entry) => JSON.parse(entry))[0];
+
+export const getNpzData = async () =>
+  getNpzs().map((npz) => ({
+    ...parseToNpzData(fs.readFileSync(path.join(npzPath, npz))),
+    filename: path
+      .join(baseUrlPath, "voice-drafts", npz)
+      .split(path.sep)
+      .join("/"),
+  }));
+// .sort((a: any, b: any) => {
+//   return (
+//     parseMetadataDate(b.date).getTime() -
+//     parseMetadataDate(a.date).getTime()
+//   );
+// }
 
 // Save voices data to json file
 // --------------------------------------------------
@@ -93,4 +124,3 @@ const saveVoicesData = () => {
     voicesDataJSON
   );
 };
-

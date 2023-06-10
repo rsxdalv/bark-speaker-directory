@@ -13,8 +13,9 @@ import { useFavorites, saveOrDeleteFromFavorites } from "./FavoritesProvider";
 import { useLocalVotes, useVotes } from "./VotesProvider";
 import { Vote } from "./Vote";
 import { MUIIcon } from "./mini/MUIIcon";
-import { Generation, GenerationRaw } from "../types/Generation";
+import { GenerationRaw } from "../types/Generation";
 import { parseMetadataDate } from "./parseMetadataDate";
+import { Metadata } from "./Metadata";
 
 export const CardBig = ({
   voice: { name, audio, download, image, tags, language, author, gender },
@@ -90,30 +91,66 @@ export const CardGeneration = ({
             </span>
           </h1>
         </div>
+        {/* <p className="text-gray-500">{filename}</p> */}
         <div className="flex w-full justify-between">
-          <AudioPlayer
-            audio={`ogg/${filename
-              ?.replace("outputs\\", "")
-              ?.replace(".wav", ".ogg")}`}
-          />
+          <AudioPlayer audio={filename} />
           <p className="text-gray-500">{prettifyDate(date)}</p>
           {/* {language && <Flag language={parseMetadataLanguage(language)} />} */}
         </div>
-        <div>
-          {/* <a
-            href={`#voices/${history_hash}`}
-            target="_blank"
-            className="text-blue-500 hover:underline"
-          >
-            Voice
-          </a> */}
-          {/* <a
-            href={`#generations/${history_hash}`}
-            target="_blank"
-            className="text-blue-500 hover:underline"
-          >
-            Generation info
-          </a> */}
+        {/* <a
+          href={`#voices/${history_hash}`}
+          target="_blank"
+          className="text-blue-500 hover:underline"
+        >
+          Voice
+        </a> */}
+        {/* <a
+          href={`#generations/${history_hash}`}
+          target="_blank"
+          className="text-blue-500 hover:underline"
+        >
+          Generation info
+        </a> */}
+        <Metadata
+          prompt={prompt}
+          language={language || "unknown"}
+          history_hash={history_hash}
+          {...rest}
+        />
+      </div>
+    </div>
+  );
+};
+
+export const CardVoiceNpz = ({
+  generation: { prompt, language, history_hash, filename, date, ...rest },
+}: {
+  generation: GenerationRaw;
+}) => {
+  // Detect if prompt is Japanese
+  const isJapanese = prompt.match(/[\u3040-\u309F\u30A0-\u30FF]/);
+  const maxLength = isJapanese ? 30 : 50;
+  // const maxLength = 100000;
+  return (
+    <div className="flex flex-col items-center justify-start w-full max-w-md py-4 px-6 bg-white rounded shadow-lg">
+      <div className="flex flex-col space-y-4 w-full h-full justify-between">
+        <div className="flex w-full">
+          <h1 className="text-2xl font-bold text-gray-900">
+            <span
+              className={
+                prompt.length > maxLength
+                  ? "text-xl font-bold text-gray-900"
+                  : "text-2xl font-bold text-gray-900"
+              }
+            >
+              {prompt.length > maxLength
+                ? prompt.substring(0, maxLength) + "..."
+                : prompt}
+            </span>
+          </h1>
+        </div>
+        <div className="flex w-full justify-between">
+          <p className="text-gray-500">{prettifyDate(date)}</p>
         </div>
         <Metadata
           prompt={prompt}
@@ -121,6 +158,70 @@ export const CardGeneration = ({
           history_hash={history_hash}
           {...rest}
         />
+      </div>
+    </div>
+  );
+};
+
+const HASH_OF_NONE = "6adf97f83acf6453d4a6a4b1070f3754"; // == md5("None")
+export const SectionVoice = ({
+  generation: {
+    name,
+    prompt,
+    language,
+    history_hash,
+    filename,
+    date,
+    hash,
+    ...rest
+  },
+  children,
+}: {
+  generation: GenerationRaw;
+  children: React.ReactNode;
+}) => {
+  // Detect if prompt is Japanese
+  const isJapanese = prompt.match(/[\u3040-\u309F\u30A0-\u30FF]/);
+  const maxLength = isJapanese ? 30 : 50;
+  const promptText =
+    prompt.length > maxLength ? prompt.substring(0, maxLength) + "..." : prompt;
+  const title = name || promptText;
+  // const maxLength = 100000;
+  return (
+    <div className="flex flex-col items-center justify-start w-full py-4 px-6 bg-white rounded shadow-lg">
+      <div className="flex flex-col space-y-4 w-full h-full justify-between">
+        <div className="flex w-full">
+          <h1 className="text-2xl font-bold text-gray-900">
+            <span
+              className={
+                name === undefined && prompt.length > maxLength
+                  ? "text-xl font-bold text-gray-900"
+                  : "text-2xl font-bold text-gray-900"
+              }
+            >
+              {title}
+            </span>
+          </h1>
+        </div>
+        <div className="flex w-full justify-between">
+          {hash !== HASH_OF_NONE ? (
+            <Download download={filename} />
+          ) : (
+            <div></div>
+          )}
+          <p className="text-gray-500">{prettifyDate(date)}</p>
+        </div>
+        <Metadata
+          prompt={prompt}
+          language={language || "unknown"}
+          history_hash={history_hash}
+          hash={hash}
+          {...rest}
+        />
+      </div>
+      <h1 className="text-2xl font-bold text-gray-900">Used in generations:</h1>
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {children}
       </div>
     </div>
   );
@@ -312,85 +413,6 @@ const Tags = ({ tags }: Pick<Voice, "tags">) => (
 );
 
 const parseMetadataLanguage = (language: string) => language.toLowerCase();
-
-const Metadata = ({
-  prompt,
-  language,
-  history_hash,
-  history_prompt,
-  seed,
-  text_temp,
-  waveform_temp,
-  is_big_semantic_model,
-  is_big_coarse_model,
-  is_big_fine_model,
-}: Pick<
-  GenerationRaw,
-  | "prompt"
-  | "language"
-  | "history_hash"
-  | "history_prompt"
-  | "seed"
-  | "text_temp"
-  | "waveform_temp"
-  | "is_big_semantic_model"
-  | "is_big_coarse_model"
-  | "is_big_fine_model"
->) => (
-  <div className="text-xs text-gray-500 flex flex-col w-full break-words">
-    <div className="font-bold">Generation details:</div>
-    <div className="flex flex-col">
-      <div className="flex flex-row">
-        <div className="font-bold">Prompt:</div>
-        <div className="ml-1">{prompt}</div>
-      </div>
-
-      <div className="flex flex-row">
-        <div className="font-bold">Semantic Model:</div>
-        <div className="ml-1">
-          {is_big_semantic_model ? "Big" : "Small"}
-        </div>
-      </div>
-      <div className="flex flex-row">
-        <div className="font-bold">Coarse Model:</div>
-        <div className="ml-1">{is_big_coarse_model ? "Big" : "Small"}</div>
-      </div>
-      <div className="flex flex-row">
-        <div className="font-bold">Fine Model:</div>
-        <div className="ml-1">{is_big_fine_model ? "Big" : "Small"}</div>
-      </div>
-
-      <div className="flex flex-row">
-        <div className="font-bold">History Hash:</div>
-        <div className="ml-1">
-          {history_prompt !== "None" ? history_hash : "None"}
-        </div>
-      </div>
-      <div className="flex flex-row">
-        <div className="font-bold">History Prompt:</div>
-        <div className="ml-1">{history_prompt}</div>
-      </div>
-
-      <div className="flex flex-row">
-        <div className="font-bold">Language:</div>
-        <div className="ml-1">{language}</div>
-      </div>
-
-      <div className="flex flex-row">
-        <div className="font-bold">Seed:</div>
-        <div className="ml-1">{seed}</div>
-      </div>
-      <div className="flex flex-row">
-        <div className="font-bold">Text Temperature:</div>
-        <div className="ml-1">{text_temp}</div>
-      </div>
-      <div className="flex flex-row">
-        <div className="font-bold">Waveform Temperature:</div>
-        <div className="ml-1">{waveform_temp}</div>
-      </div>
-    </div>
-  </div>
-);
 
 const prettifyDate = (date: string) => {
   const dateObj = parseMetadataDate(date);

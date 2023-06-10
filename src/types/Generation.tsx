@@ -44,4 +44,7 @@ export interface GenerationRaw {
   is_big_semantic_model: boolean;
   is_big_coarse_model: boolean;
   is_big_fine_model: boolean;
+
+  hash?: string;
+  name?: string;
 }

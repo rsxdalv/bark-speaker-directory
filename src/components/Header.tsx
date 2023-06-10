@@ -2,6 +2,21 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+const routes = [
+  {
+    href: "/",
+    text: "Voices",
+  },
+  {
+    href: "/generations",
+    text: "Generations",
+  },
+  {
+    href: "/voice-drafts",
+    text: "Voice Tree",
+  },
+];
+
 export const Header = ({}) => {
   // get route from next.js router
   const router = useRouter();
@@ -13,17 +28,21 @@ export const Header = ({}) => {
         Bark Speaker Directory
       </h1>
       <p className="text-lg text-center text-gray-700">
-        <Link href="/" className={route === "" ? "font-bold" : ""}>
-          Voices
-        </Link>{" "}
-        |{" "}
-        <Link
-          href="/generations"
-          className={route === "generations" ? "font-bold" : ""}
-        >
-          Generations
-        </Link>
+        {routes.map(({ href, text }) => (
+          <React.Fragment key={href}>
+            <Link
+              href={href}
+              className={highlightOnRoute(route, href.slice(1))}
+            >
+              {text}
+            </Link>
+            {href !== "/voice-drafts" && " | "}
+          </React.Fragment>
+        ))}
       </p>
     </div>
   );
 };
+
+const highlightOnRoute = (route: string, match: string) =>
+  route === match ? "font-bold" : "";
