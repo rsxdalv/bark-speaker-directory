@@ -62,12 +62,15 @@ export const getOggData = async () => {
     const filename = path.join(oggPath, ogg);
     const metadata = await parseFile(filename);
     try {
+      const result = JSON.parse(
+        // metadata?.common?.comment?.[0] || "{}"
+        metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0]
+          .value || "{}"
+      );
+      result.semantic_prompt = null;
+      result.coarse_prompt = null;
       return {
-        ...JSON.parse(
-          // metadata?.common?.comment?.[0] || "{}"
-          metadata?.native?.vorbis?.filter((x) => x.id === "DESCRIPTION")[0]
-            .value || "{}"
-        ),
+        ...result,
         filename: path.join(baseUrlPath, "ogg", ogg).split(path.sep).join("/"),
       };
     } catch (error) {
