@@ -6,7 +6,9 @@ import * as AdmZip from "adm-zip";
 import { parseNpy } from "./npz-parsing";
 import { npyToUtf8 } from "./npyToUtf8";
 
-const basePath = path.join(__dirname, "../../../public");
+const __next__base__dirname = __dirname.split(".next")[0];
+const basePath = path.join(__next__base__dirname, "public");
+// const basePath = path.join(__dirname, "../../../public");
 // const basePath = path.join(__dirname, "../../public");
 const voicesPath = path.join(basePath, "voices");
 const getVoices = () => fs.readdirSync(voicesPath);
@@ -123,7 +125,7 @@ const saveVoicesData = () => {
   const voicesData = getVoicesData();
   const voicesDataJSON = JSON.stringify(voicesData, undefined, 2);
   fs.writeFileSync(
-    path.join(__dirname, "./src/data/voices.json"),
+    path.join(__next__base__dirname, "./src/data/voices.json"),
     voicesDataJSON
   );
 };
