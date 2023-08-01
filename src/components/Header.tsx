@@ -15,6 +15,11 @@ const routes = [
     href: "/voice-drafts",
     text: "Voice Tree",
   },
+  {
+    href: "https://echo.play.ai/",
+    text: "More Voices",
+    target: "_blank",
+  },
 ];
 
 export const Header = ({}) => {
@@ -28,15 +33,16 @@ export const Header = ({}) => {
         Bark Speaker Directory
       </h1>
       <p className="text-lg text-center text-gray-700">
-        {routes.map(({ href, text }) => (
+        {routes.map(({ href, text, target }, i) => (
           <React.Fragment key={href}>
             <Link
               href={href}
               className={highlightOnRoute(route, href.slice(1))}
+              target={target}
             >
               {text}
             </Link>
-            {href !== "/voice-drafts" && " | "}
+            {i < routes.length - 1 && " | "}
           </React.Fragment>
         ))}
       </p>
