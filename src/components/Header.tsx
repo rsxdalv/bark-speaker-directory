@@ -16,7 +16,7 @@ const routes = [
     text: "Voice Tree",
   },
   {
-    href: "https://echo.play.ai/",
+    href: "https://echo.play.ai/?utm_source=bark_speaker_directory",
     text: "More Voices",
     target: "_blank",
   },
