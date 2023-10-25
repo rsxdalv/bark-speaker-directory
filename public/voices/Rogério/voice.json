@@ -1,0 +1,12 @@
+{
+  "name": "Rogério",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Rogério.npz",
+  "tags": [
+    "calm"
+  ],
+  "language": "portuguese",
+  "gender": "male",
+  "author": "520Pig520"
+}

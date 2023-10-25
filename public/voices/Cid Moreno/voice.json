@@ -1,0 +1,12 @@
+{
+  "name": "Cid Moreno",
+  "image": "./image.jpg",
+  "audio": "./sample.wav",
+  "download": "./Cid Moreno.npz",
+  "tags": [
+    "deep"
+  ],
+  "language": "portuguese",
+  "gender": "male",
+  "author": "520Pig520"
+}
