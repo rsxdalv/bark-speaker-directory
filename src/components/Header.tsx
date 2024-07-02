@@ -16,8 +16,8 @@ const routes = [
     text: "Voice Tree",
   },
   {
-    href: "https://echo.ps.ai/?utm_source=bark_speaker_directory",
-    text: "More Voices",
+    href: "https://promptecho.com/?utm_source=bark_speaker_directory",
+    text: "More Voices (PromptEcho)",
     target: "_blank",
   },
 ];
