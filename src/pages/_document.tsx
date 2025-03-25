@@ -5,9 +5,9 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <script
-          async
-          src="https://analytics.umami.is/script.js"
-          data-website-id="cc74b7dd-69e1-4a83-a422-898cbb1e1b0a"
+          defer
+          src="https://riga.us.to/script.js"
+          data-website-id="54126563-649a-4f10-a659-e54c07b980fa"
         ></script>
       </Head>
       <body>
