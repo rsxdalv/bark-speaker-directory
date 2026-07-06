@@ -16,7 +16,7 @@ const routes = [
     text: "Voice Tree",
   },
   {
-    href: "https://promptecho.com/?utm_source=bark_speaker_directory",
+    href: "https://ttswebui.com/promptecho/?utm_source=bark_speaker_directory",
     text: "More Voices (PromptEcho)",
     target: "_blank",
   },
